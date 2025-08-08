@@ -1,47 +1,40 @@
-
 <template>
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
         <el-form-item label="应用名称:" prop="app">
-    <el-input v-model="formData.app" :clearable="true" placeholder="请输入应用名称" />
-</el-form-item>
+          <el-input v-model="formData.app" :clearable="true" placeholder="请输入应用名称" />
+        </el-form-item>
         <el-form-item label="代号:" prop="title">
-    <el-input v-model="formData.title" :clearable="true" placeholder="请输入代号" />
-</el-form-item>
+          <el-input v-model="formData.title" :clearable="true" placeholder="请输入代号" />
+        </el-form-item>
+        <el-form-item label="客户ID:" prop="customer_id">
+          <el-input v-model.number="formData.customer_id" :clearable="true" placeholder="请输入客户ID" />
+        </el-form-item>
         <el-form-item label="logo:" prop="logo">
-    <SelectImage
-     v-model="formData.logo"
-     file-type="image"
-    />
-</el-form-item>
+          <SelectImage v-model="formData.logo" file-type="image" />
+        </el-form-item>
         <el-form-item label="ico:" prop="ico">
-    <SelectImage
-     v-model="formData.ico"
-     file-type="image"
-    />
-</el-form-item>
+          <SelectImage v-model="formData.ico" file-type="image" />
+        </el-form-item>
         <el-form-item label="版本号:" prop="version">
-    <el-input v-model="formData.version" :clearable="true" placeholder="请输入版本号" />
-</el-form-item>
+          <el-input v-model="formData.version" :clearable="true" placeholder="请输入版本号" />
+        </el-form-item>
         <el-form-item label="安卓链接:" prop="android">
-    <ArrayCtrl v-model="formData.android" editable/>
-</el-form-item>
+          <ArrayCtrl v-model="formData.android" editable />
+        </el-form-item>
         <el-form-item label="苹果链接:" prop="ios">
-    <ArrayCtrl v-model="formData.ios" editable/>
-</el-form-item>
+          <ArrayCtrl v-model="formData.ios" editable />
+        </el-form-item>
         <el-form-item label="应用链接:" prop="nav">
-    <ArrayCtrl v-model="formData.nav" editable/>
-</el-form-item>
+          <ArrayCtrl v-model="formData.nav" editable />
+        </el-form-item>
         <el-form-item label="背景图片:" prop="bg">
-    <SelectImage
-     v-model="formData.bg"
-     file-type="image"
-    />
-</el-form-item>
+          <SelectImage v-model="formData.bg" file-type="image" />
+        </el-form-item>
         <el-form-item label="备注:" prop="remark">
-    <el-input v-model="formData.remark" :clearable="true" placeholder="请输入备注" />
-</el-form-item>
+          <el-input v-model="formData.remark" :clearable="true" placeholder="请输入备注" />
+        </el-form-item>
         <el-form-item>
           <el-button :loading="btnLoading" type="primary" @click="save">保存</el-button>
           <el-button type="primary" @click="back">返回</el-button>
@@ -59,7 +52,7 @@ import {
 } from '@/api/manager/appManagement'
 
 defineOptions({
-    name: 'AppManagementForm'
+  name: 'AppManagementForm'
 })
 
 // 自动获取字典
@@ -81,76 +74,76 @@ const btnLoading = ref(false)
 
 const type = ref('')
 const formData = ref({
-            app: '',
-            title: '',
-            logo: "",
-            ico: "",
-            version: '',
-            android: [],
-            ios: [],
-            nav: [],
-            bg: "",
-            remark: '',
-        })
+  app: '',
+  title: '',
+  customer_id: undefined,
+  logo: "",
+  ico: "",
+  version: '',
+  android: [],
+  ios: [],
+  nav: [],
+  bg: "",
+  remark: '',
+})
 // 验证规则
 const rule = reactive({
-               app : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
+  app: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
 })
 
 const elFormRef = ref()
 
 // 初始化方法
 const init = async () => {
- // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 从而决定本页面是create还是update 以下为id作为url参数示例
-    if (route.query.id) {
-      const res = await findAppManagement({ ID: route.query.id })
-      if (res.code === 0) {
-        formData.value = res.data
-        type.value = 'update'
-      }
-    } else {
-      type.value = 'create'
+  // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 从而决定本页面是create还是update 以下为id作为url参数示例
+  if (route.query.id) {
+    const res = await findAppManagement({ ID: route.query.id })
+    if (res.code === 0) {
+      formData.value = res.data
+      type.value = 'update'
     }
+  } else {
+    type.value = 'create'
+  }
 }
 
 init()
 // 保存按钮
-const save = async() => {
-      btnLoading.value = true
-      elFormRef.value?.validate( async (valid) => {
-         if (!valid) return btnLoading.value = false
-            let res
-           switch (type.value) {
-             case 'create':
-               res = await createAppManagement(formData.value)
-               break
-             case 'update':
-               res = await updateAppManagement(formData.value)
-               break
-             default:
-               res = await createAppManagement(formData.value)
-               break
-           }
-           btnLoading.value = false
-           if (res.code === 0) {
-             ElMessage({
-               type: 'success',
-               message: '创建/更改成功'
-             })
-           }
-       })
+const save = async () => {
+  btnLoading.value = true
+  elFormRef.value?.validate(async (valid) => {
+    if (!valid) return btnLoading.value = false
+    let res
+    switch (type.value) {
+      case 'create':
+        res = await createAppManagement(formData.value)
+        break
+      case 'update':
+        res = await updateAppManagement(formData.value)
+        break
+      default:
+        res = await createAppManagement(formData.value)
+        break
+    }
+    btnLoading.value = false
+    if (res.code === 0) {
+      ElMessage({
+        type: 'success',
+        message: '创建/更改成功'
+      })
+    }
+  })
 }
 
 // 返回按钮
 const back = () => {
-    router.go(-1)
+  router.go(-1)
 }
 
 </script>
 
-<style>
-</style>
+<style></style>
