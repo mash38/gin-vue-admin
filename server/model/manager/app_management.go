@@ -19,6 +19,8 @@ type AppManagement struct {
 	Ios         datatypes.JSON `json:"ios" form:"ios" gorm:"column:ios;" swaggertype:"array,object"`             //苹果链接
 	Nav         datatypes.JSON `json:"nav" form:"nav" gorm:"column:nav;" swaggertype:"array,object"`             //应用链接
 	Bg          string         `json:"bg" form:"bg" gorm:"column:bg;"`                                           //背景图片
+	Key         *string        `json:"key" form:"key" gorm:"column:key;"`                                        //key
+	Iv          *string        `json:"iv" form:"iv" gorm:"column:iv;"`                                           //iv
 	Remark      *string        `json:"remark" form:"remark" gorm:"column:remark;"`                               //备注
 }
 

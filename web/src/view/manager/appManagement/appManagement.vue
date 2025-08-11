@@ -89,6 +89,8 @@
             <ArrayCtrl v-model="scope.row.nav" />
           </template>
         </el-table-column>
+        <el-table-column align="left" label="key" prop="key" width="120" />
+        <el-table-column align="left" label="iv" prop="iv" width="120" />
         <el-table-column label="背景图片" prop="bg" width="200">
           <template #default="scope">
             <el-image preview-teleported style="width: 100px; height: 100px" :src="getUrl(scope.row.bg)" fit="cover" />
@@ -195,6 +197,12 @@
         <el-descriptions-item label="应用链接">
           <ArrayCtrl v-model="detailForm.nav" />
         </el-descriptions-item>
+        <el-descriptions-item label="key">
+          {{ detailForm.key }}
+        </el-descriptions-item>
+        <el-descriptions-item label="iv">
+          {{ detailForm.iv }}
+        </el-descriptions-item>
         <el-descriptions-item label="背景图片">
           <el-image style="width: 50px; height: 50px" :preview-src-list="returnArrImg(detailForm.bg)"
             :src="getUrl(detailForm.bg)" fit="cover" />
@@ -254,6 +262,8 @@ const formData = ref({
   android: [],
   ios: [],
   nav: [],
+  key: '',
+  iv: '',
   bg: "",
   remark: '',
 })
